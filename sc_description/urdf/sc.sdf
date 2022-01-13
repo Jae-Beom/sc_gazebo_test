@@ -1,0 +1,276 @@
+<sdf version='1.7'>
+  <model name='SliderCrank'>
+    <joint name='fixed' type='fixed'>
+      <pose relative_to='__model__'>0 0 1 1.5708 -0 1.5708</pose>
+      <parent>world</parent>
+      <child>SC_base</child>
+    </joint>
+    <link name='SC_base'>
+      <pose relative_to='fixed'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>0 0 0 0 -0 0</pose>
+        <mass>1</mass>
+        <inertia>
+          <ixx>0.00166667</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.00166667</iyy>
+          <iyz>0</iyz>
+          <izz>0.00166667</izz>
+        </inertia>
+      </inertial>
+      <collision name='SC_base_collision'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>0.1 0.1 0.1</size>
+          </box>
+        </geometry>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <friction>
+            <ode/>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='SC_base_visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>0.1 0.1 0.1</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/Blue</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
+      </visual>
+    </link>
+    <joint name='REV01_Base_to_Lnik1' type='revolute'>
+      <pose relative_to='SC_base'>0 0 0.075 0 0 -0.523599</pose>
+      <parent>SC_base</parent>
+      <child>SC_link1</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-1e+16</lower>
+          <upper>1e+16</upper>
+        </limit>
+        <dynamics>
+          <damping>0.7</damping>
+          <friction>0</friction>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='SC_link1'>
+      <pose relative_to='REV01_Base_to_Lnik1'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>0 0.25 0 0 -0 0</pose>
+        <mass>1</mass>
+        <inertia>
+          <ixx>0.0254167</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.000416667</iyy>
+          <iyz>0</iyz>
+          <izz>0.0254167</izz>
+        </inertia>
+      </inertial>
+      <collision name='SC_link1_collision'>
+        <pose>0 0.25 0 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>0.05 0.55 0.05</size>
+          </box>
+        </geometry>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <friction>
+            <ode>
+              <mu>0.2</mu>
+              <mu2>0.2</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='SC_link1_visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://sc_description/meshes/SC_link1.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/Red</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
+      </visual>
+    </link>
+    <joint name='REV02_Lnik1_to_Lnik2' type='revolute'>
+      <pose relative_to='SC_link1'>0 0.5 0.05 0 0 -1.5708</pose>
+      <parent>SC_link1</parent>
+      <child>SC_link2</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-1e+16</lower>
+          <upper>1e+16</upper>
+        </limit>
+        <dynamics>
+          <damping>0.7</damping>
+          <friction>0</friction>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='SC_link2'>
+      <pose relative_to='REV02_Lnik1_to_Lnik2'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>0 0.433013 0 0 -0 0</pose>
+        <mass>1</mass>
+        <inertia>
+          <ixx>0.0701335</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.000416667</iyy>
+          <iyz>0</iyz>
+          <izz>0.0701335</izz>
+        </inertia>
+      </inertial>
+      <collision name='SC_link2_collision'>
+        <pose>0 0.433013 0 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>0.05 0.916025 0.05</size>
+          </box>
+        </geometry>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <friction>
+            <ode>
+              <mu>0.2</mu>
+              <mu2>0.2</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='SC_link2_visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://sc_description/meshes/SC_link2.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/Red</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
+      </visual>
+    </link>
+    <joint name='REV03_Lnik2_to_Piston' type='revolute'>
+      <pose relative_to='SC_link2'>0 0.866025 -0.065 0 -0 2.0944</pose>
+      <parent>SC_link2</parent>
+      <child>SC_Piston</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-1e+16</lower>
+          <upper>1e+16</upper>
+        </limit>
+        <dynamics>
+          <damping>0.7</damping>
+          <friction>0</friction>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='SC_Piston'>
+      <pose relative_to='REV03_Lnik2_to_Piston'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>0 0 0 0 -0 0</pose>
+        <mass>1</mass>
+        <inertia>
+          <ixx>0.00106667</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.00106667</iyy>
+          <iyz>0</iyz>
+          <izz>0.00106667</izz>
+        </inertia>
+      </inertial>
+      <collision name='SC_Piston_collision'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>0.08 0.08 0.08</size>
+          </box>
+        </geometry>
+        <surface>
+          <contact>
+            <ode/>
+          </contact>
+          <friction>
+            <ode>
+              <mu>0.2</mu>
+              <mu2>0.2</mu2>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+      <visual name='SC_Piston_visual'>
+        <pose>0 0 0 0 -0 0</pose>
+        <geometry>
+          <box>
+            <size>0.08 0.08 0.08</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/Orange</name>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+          </script>
+        </material>
+      </visual>
+    </link>
+    <plugin name='gazebo_ros_control' filename='libgazebo_ros_control.so'>
+      <robotNamespace>/SliderCrank</robotNamespace>
+      <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+    </plugin>
+    <static>0</static>
+    <joint name='TRANS01_Base_to_Piston' type='prismatic'>
+      <child>SC_Piston</child>
+      <parent>SC_base</parent>
+      <axis>
+        <xyz>1 0 0</xyz>
+        <limit>
+          <lower>-2</lower>
+          <upper>2</upper>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+      <origin rpy='0 0 0' xyz='1 0 0.065'/>
+    </joint>
+  </model>
+</sdf>

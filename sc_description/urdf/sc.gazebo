@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<robot>
+
+  <!-- ros_control plugin -->
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <robotNamespace>/SliderCrank</robotNamespace>
+      <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+    </plugin>
+  </gazebo>
+
+  <!-- SC_base -->
+  <gazebo reference="SC_base">
+    <material>Gazebo/Blue</material>
+  </gazebo>
+
+  <!-- SC_link1 -->
+  <gazebo reference="SC_link1">
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <material>Gazebo/Red</material>
+  </gazebo>
+
+  <!-- SC_link2 -->
+  <gazebo reference="SC_link2">
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <material>Gazebo/Red</material>
+  </gazebo>
+
+  <!-- SC_Piston -->
+  <gazebo reference="SC_Piston">
+    <mu1>0.2</mu1>
+    <mu2>0.2</mu2>
+    <material>Gazebo/Orange</material>
+  </gazebo>
+
+  <gazebo>
+    <joint name='TRANS01_Base_to_Piston' type='prismatic'>
+      <child>SC_Piston</child>
+      <parent>SC_base</parent>
+      <axis>
+        <xyz>1 0 0</xyz>
+        <limit>
+          <lower>-2</lower>
+          <upper>2</upper>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+      <origin rpy="0 0 0" xyz="1 0 ${piston_side/2+link_side/2}"/>    
+    </joint>
+  </gazebo>
+
+</robot>

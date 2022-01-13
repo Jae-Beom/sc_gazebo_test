@@ -1,0 +1,178 @@
+<?xml version="1.0"?>
+
+<robot name="SliderCrank" xmlns:xacro="http://www.ros.org/wiki/xacro">
+  
+  <!-- Property -->
+  <xacro:property name="M_PI" value="3.1415926535897931"/>
+  <xacro:property name="deg2rad" value="${M_PI/180}"/>
+  <xacro:property name="mass" value="1" />
+  <xacro:property name="side" value="0.1" />
+  <xacro:property name="link_side" value="${side/2}" />
+  <xacro:property name="link1_length" value="${cos(60*deg2rad)+link_side}" />
+  <xacro:property name="link2_length" value="${sin(60*deg2rad)+link_side}" />
+  <xacro:property name="piston_side" value="${side*0.8}" />
+
+  <!-- Import -->
+  <xacro:include filename="$(find sc_description)/urdf/materials.xacro" />
+  <xacro:include filename="$(find sc_description)/urdf/sc.gazebo" />
+  <xacro:include filename="$(find sc_description)/urdf/sc.transmission" />
+
+  <!-- macro -->
+  <xacro:macro name="box_inertia" params="m dx dy dz">
+    <inertia ixx="${m/12*(dy*dy + dz*dz)}" ixy="0.0" ixz="0.0"
+             iyy="${m/12*(dx*dx + dz*dz)}" iyz="0.0"
+             izz="${m/12*(dx*dx + dy*dy)}"/>            
+  </xacro:macro>
+
+
+  <link name="world"/>
+
+  <joint name="fixed" type="fixed">
+    <parent link="world"/>
+    <child link="SC_base"/>
+    <origin xyz="0 0 ${side*10}" rpy="${90*deg2rad} 0 ${90*deg2rad}"/>
+  </joint>
+
+
+  <!-- base -->
+  <link name="SC_base">
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="${side} ${side} ${side}"/>
+      </geometry>
+    </collision>
+
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="${side} ${side} ${side}"/>
+        <!-- <mesh filename="package://sc_description/meshes/SC_Base.stl"/> -->
+      </geometry>
+      <material name="blue"/>
+    </visual>
+    
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="${mass}"/>
+      <xacro:box_inertia m="${mass}" dx="${side}" dy="${side}" dz="${side}"/>
+    </inertial>
+  </link>
+
+
+  <joint name="REV01_Base_to_Lnik1" type="continuous">
+    <axis xyz="0 0 1"/>
+    <parent link="SC_base"/>
+    <child link="SC_link1"/>
+    <origin xyz="0 0 ${side/2+link_side/2}" rpy="0 0 ${-30*deg2rad}"/>
+    <dynamics damping="0.7"/>
+  </joint>
+
+
+  <!-- link1 -->
+  <link name="SC_link1">
+    <collision>
+      <origin rpy="0 0 0" xyz="0 ${cos(60*deg2rad)/2} 0"/>
+      <geometry>
+        <box size="${link_side} ${link1_length} ${link_side}"/>
+      </geometry>
+    </collision>
+
+    <visual>
+      <!-- <origin rpy="0 0 0" xyz="0 ${cos(60*deg2rad)/2} 0"/> -->
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <!-- <box size="${link_side} ${link1_length} ${link_side}"/> -->
+        <mesh filename="package://sc_description/meshes/SC_link1.stl"/>
+      </geometry>
+    </visual>
+
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 ${cos(60*deg2rad)/2} 0"/>
+      <mass value="${mass}"/>
+      <xacro:box_inertia m="${mass}" dx="${link_side}" dy="${link1_length}" dz="${link_side}"/>    
+    </inertial>
+  </link>
+
+  <joint name="REV02_Lnik1_to_Lnik2" type="continuous">
+    <axis xyz="0 0 1"/>
+    <parent link="SC_link1"/>
+    <child link="SC_link2"/>
+    <origin rpy="0 0 ${-90*deg2rad}" xyz="0 ${cos(60*deg2rad)} ${link_side}"/>
+    <dynamics damping="0.7"/>
+  </joint>
+
+
+  <!-- link2 -->
+  <link name="SC_link2">
+    <collision>
+      <origin rpy="0 0 0" xyz="0 ${sin(60*deg2rad)/2} 0"/>
+      <geometry>
+        <box size="${link_side} ${link2_length} ${link_side}"/>
+      </geometry>
+    </collision>
+
+    <visual>
+      <!-- <origin rpy="0 0 0" xyz="0 ${sin(60*deg2rad)/2} 0"/> -->
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <!-- <box size="${link_side} ${link2_length} ${link_side}"/> -->
+        <mesh filename="package://sc_description/meshes/SC_link2.stl"/>
+      </geometry>
+    </visual>
+
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 ${sin(60*deg2rad)/2} 0"/>
+      <mass value="${mass}"/>
+      <xacro:box_inertia m="${mass}" dx="${link_side}" dy="${link2_length}" dz="${link_side}"/>    
+    </inertial>
+  </link>
+
+  <joint name="REV03_Lnik2_to_Piston" type="continuous">
+    <axis xyz="0 0 1"/>
+    <parent link="SC_link2"/>
+    <child link="SC_Piston"/>
+    <origin rpy="0 0 ${120*deg2rad}" xyz="0 ${sin(60*deg2rad)} -${piston_side/2+link_side/2}"/>
+    <dynamics damping="0.7"/>
+  </joint>
+
+
+  <!-- piston -->
+  <link name="SC_Piston">
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="${piston_side} ${piston_side} ${piston_side}"/>
+      </geometry>
+    </collision>
+
+    <visual>
+      <geometry>
+        <box size="${piston_side} ${piston_side} ${piston_side}"/>
+        <!-- <mesh filename="package://sc_description/meshes/SC_Pis.stl"/> -->
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+    </visual>
+
+    <inertial>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <mass value="${mass}"/>
+      <xacro:box_inertia m="${mass}" dx="${piston_side}" dy="${piston_side}" dz="${piston_side}"/>    
+    </inertial>
+  </link>
+
+  <!-- <joint name="TRANS01_Base_to_Piston" type="prismatic">
+    <axis xyz="1 0 0"/>
+    <parent link="SC_base"/>
+    <child link="SC_Piston"/>
+    <limit effort="1000.0" lower="-2" upper="2" velocity="0.5"/>
+    <origin rpy="0 0 0" xyz="1 0 ${piston_side/2+link_side/2}"/>
+    <dynamics damping="0.7"/>
+  </joint> -->
+
+
+
+</robot>
+
+
+

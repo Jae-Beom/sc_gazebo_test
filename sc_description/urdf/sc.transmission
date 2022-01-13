@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <!-- macro -->
+  <xacro:macro name="transmission" params="joint_name">
+    <transmission name="tran_${joint_name}">
+      <type>transmission_interface/SimpleTransmission</type>
+      <joint name="${joint_name}">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      </joint>
+      <actuator name="motor_${joint_name}">
+        <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        <mechanicalReduction>1</mechanicalReduction>
+      </actuator>  
+    </transmission>      
+  </xacro:macro>
+
+
+  <xacro:transmission joint_name="REV01_Base_to_Lnik1" />    
+  <xacro:transmission joint_name="REV02_Lnik1_to_Lnik2" />  
+  <xacro:transmission joint_name="REV03_Lnik2_to_Piston" />  
+  <xacro:transmission joint_name="TRANS01_Base_to_Piston" />  
+  
+</robot>
