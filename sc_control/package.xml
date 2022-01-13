@@ -3,12 +3,8 @@
   <name>sc_control</name>
   <version>0.0.0</version>
   <description>The sc_control package</description>
-
-  <maintainer email="davetcoleman@gmail.com">Dave Coleman</maintainer>
-
+  <maintainer email="jae-beom@kakao.com"></maintainer>
   <license>BSD</license>
-
-  <author email="davetcoleman@gmail.com">Dave Coleman</author>
 
   <buildtool_depend>catkin</buildtool_depend>
 
