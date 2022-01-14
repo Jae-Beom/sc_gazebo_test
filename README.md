@@ -5,12 +5,15 @@ gazebo: slider-crank
 
 ## SliderCrank URDF model check
 
-### Rviz launch (open loop)   
-  roslaunch sc_description sc_rviz.launch
+### Rviz launch (see open loop)   
+<pre><code>roslaunch sc_description sc_rviz.launch
+</code></pre>
 
-### Gazebo launch (closed loop)   
-  roslaunch sc_gazebo sc_world.launch
+### Gazebo launch (see closed loop)  
+<pre><code>roslaunch sc_gazebo sc_world.launch
+</code></pre>
 
 #### Joint control:   
 1st revolute joint, use '/SliderCrank/joint_position_controller/command' Topic   
-  rosrun rqt_gui rqt_gui
+<pre><code>rosrun rqt_gui rqt_gui
+</code></pre>
