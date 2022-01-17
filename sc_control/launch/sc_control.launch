@@ -5,9 +5,9 @@
   <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
 	output="screen" ns="/SliderCrank" args="joint_state_controller joint_position_controller"/>
 
-  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
+<!--   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
 	respawn="false" output="screen">
-    <remap from="/joint_states" to="/sc/joint_states" />
-  </node>
+    <remap from="/joint_states" to="/SliderCrank/joint_states" />
+  </node> -->
 
 </launch>
